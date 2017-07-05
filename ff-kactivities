@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo "Asking for profile name..."
+
+PROFILE_NAME=`kdialog --inputbox "New Profile Name:"`|| exit 0;
+
+cp -rf ~/.mozilla/firefox/`ls ~/.mozilla/firefox/ | grep default | head -n 1` ~/.mozilla/firefox/`kactivities-cli --current-activity | cut -d' ' -f2`
+
+echo "Firefox profile folder copied."
+
+cp ~/.local/share/applications/firefox.desktop ~/.local/share/applications/Firefox\ \("$PROFILE_NAME"\)
+
+echo "Firefox launcher copied."
+
+kwriteconfig5 --file ~/.local/share/applications/Firefox\ \("$PROFILE_NAME"\) --group 'Desktop Entry' --key Exec "firefox --profile /home/alex/.mozilla/firefox/`kactivities-cli --current-activity | cut -d' ' -f2`"
+
+echo "Edited Exec field in launcher."
+
+kwriteconfig5 --file ~/.local/share/applications/Firefox\ \("$PROFILE_NAME"\) --group 'Desktop Entry' --key Name "Firefox (`echo $PROFILE_NAME | tr '_' ' '`)"
+
+echo "Edited Name fields in launcher."
+
+qdbus org.kde.ActivityManager /ActivityManager/Resources/Linking LinkResourceToActivity :global ~/.local/share/applications/Firefox\ \("$PROFILE_NAME"\) :current
+
+echo "Launcher linked to current Activity"
+
+kdialog --passivepopup "Firefox (`echo $PROFILE_NAME | tr '_' ' '`) created." --icon firefox
+
+echo "Done."
