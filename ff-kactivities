@@ -12,7 +12,7 @@ cp ~/.local/share/applications/firefox.desktop ~/.local/share/applications/Firef
 
 echo "Firefox launcher copied."
 
-kwriteconfig5 --file ~/.local/share/applications/Firefox\ \("$PROFILE_NAME"\) --group 'Desktop Entry' --key Exec "firefox --profile /home/alex/.mozilla/firefox/`kactivities-cli --current-activity | cut -d' ' -f2`"
+kwriteconfig5 --file ~/.local/share/applications/Firefox\ \("$PROFILE_NAME"\) --group 'Desktop Entry' --key Exec "firefox --profile ~/.mozilla/firefox/`kactivities-cli --current-activity | cut -d' ' -f2`"
 
 echo "Edited Exec field in launcher."
 
